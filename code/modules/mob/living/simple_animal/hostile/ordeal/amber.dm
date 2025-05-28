@@ -558,3 +558,55 @@
 /obj/effect/temp_visual/ambermidnight_hole/Initialize()
 	. = ..()
 	animate(src, alpha = 0, time = duration)
+
+/mob/living/simple_animal/hostile/ordeal/amber_spitter
+	name = "placeholder bug"
+	desc = "It looks suspiciously like an Amber Dawn, but you're pretty sure it's meant to have a different sprite."
+	health = 350
+	maxHealth = 350
+	damage_coeff = list(RED_DAMAGE = 1.2, WHITE_DAMAGE = 0.5, BLACK_DAMAGE = 0.6, PALE_DAMAGE = 2)
+	icon = 'ModularTegustation/Teguicons/tegumobs.dmi'
+	icon_state = "amber_bug"
+	icon_living = "amber_bug"
+	icon_dead = "amber_bug_dead"
+	color = "#ffc400"
+	faction = list("amber_ordeal")
+	/// Ranged stats.
+	ranged = TRUE
+	ranged_cooldown_time = 40
+	minimum_distance = 2
+	retreat_distance = 4
+	ranged_message = "spits"
+	projectiletype = /obj/projectile/amber_spit
+	projectilesound = 'sound/abnormalities/meltinglove/ranged.ogg'
+	/// Melee stats.
+	density = TRUE
+	pass_flags_self = PASSMOB | PASSTABLE
+	speed = 1.7
+	attack_cooldown = 0.5
+	melee_damage_lower = 8
+	melee_damage_upper = 10
+	melee_damage_type = RED_DAMAGE
+
+/mob/living/simple_animal/hostile/ordeal/amber_spitter/Initialize()
+	. = ..()
+	transform *= 1.2
+
+/mob/living/simple_animal/hostile/ordeal/amber_spitter/CanAllowThrough(atom/movable/mover, turf/target)
+	. = ..()
+	if (istype(mover, /mob/living/simple_animal/hostile/ordeal/amber_spitter))
+		return FALSE
+	else if(istype(mover, /mob/))
+		return faction_check_mob(mover, TRUE)
+
+
+
+/obj/projectile/amber_spit
+	name = "amber spit"
+	desc = "It's sizzling...?"
+	icon_state = "neurotoxin"
+	damage = 20
+	damage_type = RED_DAMAGE
+	hitsound = 'sound/effects/splat.ogg'
+	speed = 1.2
+	color = "#ee520a"
